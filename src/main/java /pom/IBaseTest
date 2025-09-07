@@ -1,0 +1,9 @@
+namespace Pom
+{
+    // Definimos la interfaz BaseTest
+    public interface IBaseTest
+    {
+        // Declaración del método en C#
+        bool IsAtCorrectPage();
+    }
+}
