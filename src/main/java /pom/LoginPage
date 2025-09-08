@@ -1,0 +1,46 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace Pom
+{
+    public class LoginPage : IBaseTest
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // Locators (usando By para identificar los elementos)
+        private readonly By signInTitle = By.XPath("//h1[text()='Sign in']");
+        private readonly By emailField = By.XPath("//input[@name='email']");
+        private readonly By passwordField = By.XPath("//input[@name='password']");
+        private readonly By loginButton = By.XPath("//button[text()='Login']");
+
+        // Constructor: Inicializa el WebDriver y las esperas necesarias
+        public LoginPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        }
+
+        // Método para verificar si estamos en la página correcta
+        public bool IsAtCorrectPage()
+        {
+            _wait.Until(ExpectedConditions.ElementIsVisible(signInTitle)); // Espera a que el título sea visible
+            return _driver.FindElement(signInTitle).Displayed;
+        }
+
+        // Método para iniciar sesión
+        public void SignIn(string user, string email, string password)
+        {
+            // Asegurarse de que cada campo esté visible antes de interactuar
+            _wait.Until(ExpectedConditions.ElementIsVisible(emailField));
+            _driver.FindElement(emailField).SendKeys(email); // Llena el campo de correo electrónico
+
+            _wait.Until(ExpectedConditions.ElementIsVisible(passwordField));
+            _driver.FindElement(passwordField).SendKeys(password); // Llena el campo de contraseña
+
+            _wait.Until(ExpectedConditions.ElementIsVisible(loginButton));
+            _driver.FindElement(loginButton).Click(); // Haz clic en el botón de inicio de sesión
+        }
+    }
+}
