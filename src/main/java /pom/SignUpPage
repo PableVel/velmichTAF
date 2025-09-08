@@ -1,0 +1,53 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace Pom
+{
+    public class SignUpPage : IBaseTest
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // Locators (elementos en la página)
+        private readonly By signUpTitle = By.XPath("//h1[text()='Sign up']");
+        private readonly By userField = By.XPath("//input[@name='username']");
+        private readonly By emailField = By.XPath("//input[@name='email']");
+        private readonly By passwordField = By.XPath("//input[@name='password']");
+        private readonly By signUpButton = By.XPath("//button[text()='Sign up']");
+
+        // Constructor: Inicializar navegador y configuración de espera
+        public SignUpPage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        }
+
+        // Método para verificar si estamos en la página correcta
+        public bool IsAtCorrectPage()
+        {
+            _wait.Until(ExpectedConditions.ElementIsVisible(signUpTitle)); // Espera explícita
+            return _driver.FindElement(signUpTitle).Displayed;
+        }
+
+        // Método para registrarse
+        public void SignUp(string user, string email, string password)
+        {
+            // Rellenar el campo de usuario
+            _wait.Until(ExpectedConditions.ElementIsVisible(userField));
+            _driver.FindElement(userField).SendKeys(user);
+
+            // Rellenar el campo de email
+            _wait.Until(ExpectedConditions.ElementIsVisible(emailField));
+            _driver.FindElement(emailField).SendKeys(email);
+
+            // Rellenar el campo de contraseña
+            _wait.Until(ExpectedConditions.ElementIsVisible(passwordField));
+            _driver.FindElement(passwordField).SendKeys(password);
+
+            // Hacer clic en el botón de "Sign up"
+            _wait.Until(ExpectedConditions.ElementIsVisible(signUpButton));
+            _driver.FindElement(signUpButton).Click();
+        }
+    }
+}
