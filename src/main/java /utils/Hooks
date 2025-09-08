@@ -1,0 +1,35 @@
+using NUnit.Framework; // Necesario para las anotaciones de NUnit
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+namespace Utils
+{
+    public class Hooks
+    {
+        protected IWebDriver driver;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // Inicializamos el navegador (usar Chrome como ejemplo)
+            driver = new ChromeDriver();
+            
+            // Navegamos a la URL deseada
+            driver.Navigate().GoToUrl("https://conduit-realworld-example-app.fly.dev/");
+            
+            // Establecemos un tiempo de espera predeterminado
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            // Cerramos el navegador
+            if (driver != null)
+            {
+                driver.Quit();
+            }
+        }
+    }
+}
