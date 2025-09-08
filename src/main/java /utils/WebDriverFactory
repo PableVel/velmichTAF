@@ -1,0 +1,83 @@
+using System;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Edge;
+
+namespace Utils
+{
+    public static class WebDriverFactory
+    {
+        private static IWebDriver driver;
+
+        // Método para inicializar el navegador (configurado mediante argumentos del sistema)
+        public static IWebDriver InitBrowser()
+        {
+            // Definir el tipo de navegador (por defecto "chrome")
+            string browserType = Environment.GetEnvironmentVariable("browser")?.ToLower() ?? "chrome";
+
+            if (driver == null)
+            {
+                switch (browserType)
+                {
+                    case "chrome":
+                        driver = new ChromeDriver(GetChromeOptions());
+                        break;
+                    case "firefox":
+                        driver = new FirefoxDriver(GetFirefoxOptions());
+                        break;
+                    case "edge":
+                        driver = new EdgeDriver(GetEdgeOptions());
+                        break;
+                    default:
+                        throw new ArgumentException($"Navegador no soportado: {browserType}");
+                }
+
+                // Configuración de tamaño de ventana / maximización
+                driver.Manage().Window.Maximize();
+
+                // Tiempo global de espera implícito
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            }
+
+            return driver;
+        }
+
+        // Método para cerrar el navegador y liberar recursos
+        public static void CloseDriver()
+        {
+            if (driver != null)
+            {
+                driver.Quit();
+                driver = null;
+            }
+        }
+
+        // Opciones específicas para Chrome
+        private static ChromeOptions GetChromeOptions()
+        {
+            var options = new ChromeOptions();
+            options.AddArgument("--start-maximized"); // Iniciar maximizado
+            options.AddArgument("--disable-notifications"); // Deshabilitar notificaciones
+            options.AddArgument("--disable-extensions"); // Deshabilitar extensiones
+            return options;
+        }
+
+        // Opciones específicas para Firefox
+        private static FirefoxOptions GetFirefoxOptions()
+        {
+            var options = new FirefoxOptions();
+            options.AddArgument("--width=1920");
+            options.AddArgument("--height=1080");
+            return options;
+        }
+
+        // Opciones específicas para Edge
+        private static EdgeOptions GetEdgeOptions()
+        {
+            var options = new EdgeOptions();
+            options.AddArgument("--start-maximized");
+            return options;
+        }
+    }
+}
