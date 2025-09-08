@@ -1,0 +1,44 @@
+using System;
+using System.Text;
+
+namespace Utils
+{
+    public static class RandomGenerator
+    {
+        // Método para generar una cadena aleatoria con un prefijo
+        public static string GetRandomString(string prefix)
+        {
+            // Usamos un StringBuilder para construir la cadena de forma eficiente
+            StringBuilder user = new StringBuilder(prefix);
+            Random random = new Random();
+
+            // Generamos 5 números aleatorios y los agregamos al StringBuilder
+            for (int i = 0; i < 5; i++)
+            {
+                int randomNumber = random.Next(10); // Número aleatorio entre 0 y 9
+                user.Append(randomNumber);
+            }
+
+            return user.ToString();
+        }
+
+        // Método para generar un correo electrónico aleatorio con un usuario dado
+        public static string GetRandomEmail(string user)
+        {
+            // Usamos un StringBuilder para construir el correo electrónico
+            StringBuilder email = new StringBuilder(user);
+            Random random = new Random();
+
+            // Lista de dominios disponibles
+            string[] domains = { "gmail.com", "yahoo.com", "outlook.com", "example.com" };
+            
+            // Seleccionamos un dominio aleatorio
+            string randomDomain = domains[random.Next(domains.Length)];
+
+            // Combine el prefijo de usuario con el dominio
+            email.Append("@").Append(randomDomain);
+
+            return email.ToString();
+        }
+    }
+}
