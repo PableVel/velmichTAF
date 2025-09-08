@@ -1,0 +1,51 @@
+using NUnit.Framework; // Framework para manejar pruebas en C#
+using OpenQA.Selenium;
+using Pom; // Namespace donde están los Page Objects
+using Utils; // Namespace donde están las utilidades (como RandomGenerator)
+
+namespace Tests
+{
+    public class Tests : Hooks // Hooks contiene la configuración para iniciar el navegador
+    {
+        [Test]
+        public void SignUpTest()
+        {
+            // Inicializamos HomePage
+            HomePage homePage = new HomePage(driver);
+            Assert.IsTrue(homePage.IsAtCorrectPage(), "No estamos en la página principal.");
+            homePage.ClickSignUp();
+
+            // Generar datos aleatorios para el registro
+            string user = RandomGenerator.GetRandomString("user");
+            string email = RandomGenerator.GetRandomEmail(user);
+            string password = RandomGenerator.GetRandomString("pass");
+
+            // Navegamos a SignUpPage y realizamos el registro
+            SignUpPage signUpPage = new SignUpPage(driver);
+            Assert.IsTrue(signUpPage.IsAtCorrectPage(), "No estamos en la página de registro.");
+            signUpPage.SignUp(user, email, password);
+
+            // Verificamos si llegamos correctamente a WelcomePage
+            WelcomePage welcomePage = new WelcomePage(driver);
+            Assert.IsTrue(welcomePage.IsAtCorrectPage(), "No estamos en la página de bienvenida.");
+        }
+
+        [Test]
+        public void LoginTest()
+        {
+            // Inicializamos HomePage
+            HomePage homePage = new HomePage(driver);
+            Assert.IsTrue(homePage.IsAtCorrectPage(), "No estamos en la página principal.");
+            homePage.ClickLogin();
+
+            // Navegamos a LoginPage y realizamos el inicio de sesión
+            LoginPage loginPage = new LoginPage(driver);
+            Assert.IsTrue(loginPage.IsAtCorrectPage(), "No estamos en la página de inicio de sesión.");
+            loginPage.SignIn("PabloTestUser", "PabloTestUser@gmail.com", "Password1234");
+
+            // Verificamos si llegamos correctamente a WelcomePage
+            WelcomePage welcomePage = new WelcomePage(driver);
+            Assert.IsTrue(welcomePage.IsAtCorrectPage(), "No estamos en la página de bienvenida.");
+        }
+    }
+}
