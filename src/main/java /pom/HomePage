@@ -1,0 +1,45 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace Pom
+{
+    public class HomePage : IBaseTest
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // Locators (usando By para seleccionar elementos)
+        private readonly By signUpLink = By.XPath("//a[text()='Sign up']");
+        private readonly By conduitTitle = By.XPath("//h1[text()='conduit']");
+        private readonly By loginLink = By.XPath("//a[text()='Login']");
+
+        // Constructor: Inicializa el WebDriver y espera implícita/explicita
+        public HomePage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10)); // Configura espera explícita
+        }
+
+        // Método para verificar si estamos en la página correcta
+        public bool IsAtCorrectPage()
+        {
+            _wait.Until(ExpectedConditions.ElementIsVisible(conduitTitle)); // Espera a que el elemento esté visible
+            return _driver.FindElement(conduitTitle).Displayed;
+        }
+
+        // Método para hacer clic en el enlace "Sign up"
+        public void ClickSignUp()
+        {
+            _wait.Until(ExpectedConditions.ElementIsVisible(signUpLink)); // Espera explícita
+            _driver.FindElement(signUpLink).Click();
+        }
+
+        // Método para hacer clic en el enlace "Login"
+        public void ClickLogin()
+        {
+            _wait.Until(ExpectedConditions.ElementIsVisible(loginLink)); // Espera explícita
+            _driver.FindElement(loginLink).Click();
+        }
+    }
+}
