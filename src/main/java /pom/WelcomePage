@@ -1,0 +1,32 @@
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+namespace Pom
+{
+    public class WelcomePage : IBaseTest
+    {
+        private readonly IWebDriver _driver;
+        private readonly WebDriverWait _wait;
+
+        // Locator (elemento en la página)
+        private readonly By yourFeedButton = By.XPath("//button[text()='Your Feed']");
+
+        // Constructor: Inicializar navegador y configuración de espera
+        public WelcomePage(IWebDriver driver)
+        {
+            _driver = driver;
+            _wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        }
+
+        // Método para verificar si estamos en la página correcta
+        public bool IsAtCorrectPage()
+        {
+            // Esperar hasta que el botón "Your Feed" esté visible
+            _wait.Until(ExpectedConditions.ElementIsVisible(yourFeedButton));
+
+            // Verificar si el botón está visible
+            return _driver.FindElement(yourFeedButton).Displayed;
+        }
+    }
+}
