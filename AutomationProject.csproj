@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net6.0</TargetFramework> <!-- Cambia a 'net7.0' o según tu .NET SDK -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion> <!-- Similar al "source" y "target" en el Maven plugin -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Selenium WebDriver (Driver Genérico) -->
+    <PackageReference Include="Selenium.WebDriver" Version="4.14.0" />
+
+    <!-- Selenium Support (para ExpectedConditions y funcionalidades adicionales) -->
+    <PackageReference Include="Selenium.Support" Version="4.14.0" />
+
+    <!-- NUnit Framework -->
+    <PackageReference Include="NUnit" Version="3.13.4" />
+
+    <!-- NUnit Test Adapter: Requerido para ejecutar pruebas con dotnet test -->
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+
+    <!-- Extensiones para Selenium (Opcional: Para reportes o utilidades avanzadas) -->
+    <!--<PackageReference Include="ExtentReports" Version="5.0.9" />-->
+  </ItemGroup>
+
+</Project>
